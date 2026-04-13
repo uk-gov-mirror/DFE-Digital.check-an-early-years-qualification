@@ -23,7 +23,7 @@ public static class HelpPages
     public const string TechnicalIssueEmailAddress = "6Vsyb2MIHy0xd5NwEIJB3N";
 
     /// <summary>
-    ///     Entry ID for the "Technical issue confirmation" Help Confirmation Page.
+    ///     Entry ID for the "Qualification query confirmation" Help Confirmation Page.
     /// </summary>
     public const string QualificationQueryConfirmation = "3kC8vSCAeh6wwXa5MyuMU3";
 
