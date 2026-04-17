@@ -656,33 +656,6 @@ public class MockContentfulService : IContentService
                                                  Question = "Tell us about your experience (optional)",
                                                  HintText =
                                                      "Do not include personal information, for example the name of the qualification holder"
-                                             },
-                                             new FeedbackFormQuestionRadioAndInput
-                                             {
-                                                 Question =
-                                                     "Would you like us to contact you about future user research?",
-                                                 IsTheQuestionMandatory = true,
-                                                 Options =
-                                                 [
-                                                     new Option
-                                                     {
-                                                         Label = "Yes",
-                                                         Value = "yes"
-                                                     },
-                                                     new Option
-                                                     {
-                                                         Label = "No",
-                                                         Value = "no"
-                                                     }
-                                                 ],
-                                                 InputHeading = "Your email address",
-                                                 InputHeadingHintText = "Input heading hint text",
-                                                 ValidateInputAsAnEmailAddress = true,
-                                                 ErrorMessage =
-                                                     "Select whether you want to be contacted about future research",
-                                                 ErrorMessageForInput = "Enter your email address",
-                                                 ErrorMessageForInvalidEmailFormat =
-                                                     "Enter an email address in the correct format, like name@example.com"
                                              }
                                          ]
                                      });

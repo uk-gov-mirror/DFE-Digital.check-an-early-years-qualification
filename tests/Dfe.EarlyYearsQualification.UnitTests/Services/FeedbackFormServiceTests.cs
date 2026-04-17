@@ -23,176 +23,34 @@ public class FeedbackFormServiceTests
                                new FeedbackFormQuestionListModel
                                {
                                    Question = (feedbackFormPage.Questions[1] as BaseFeedbackFormQuestion)!.Question
-                               },
-                               new FeedbackFormQuestionListModel
-                               {
-                                   Question = (feedbackFormPage.Questions[2] as BaseFeedbackFormQuestion)!.Question
                                }
                            };
         var model = CreateFeedbackFormPageModel(questionList);
-        
+
         var mockUserJourneyCookieService = new Mock<IUserJourneyCookieService>();
-        
+
         var service = new FeedbackFormService(mockUserJourneyCookieService.Object);
-        
+
         var result = service.ValidateQuestions(feedbackFormPage, model);
-        
+
         result.Should().NotBeNull();
         result.ErrorBannerHeading.Should().Match(feedbackFormPage.ErrorBannerHeading);
         result.ErrorSummaryLinks.Should().NotBeNull();
-        result.ErrorSummaryLinks.Count.Should().Be(3);
-        
+        result.ErrorSummaryLinks.Count.Should().Be(2);
+
         var radioButtonErrorSummaryLink = result.ErrorSummaryLinks[0];
         radioButtonErrorSummaryLink.Should().NotBeNull();
         radioButtonErrorSummaryLink.ElementLinkId.Should().Be("0_yes");
         radioButtonErrorSummaryLink.ErrorBannerLinkText.Should().Be((feedbackFormPage.Questions[0] as FeedbackFormQuestionRadio)!.ErrorMessage);
         model.QuestionList[0].HasError.Should().BeTrue();
         model.QuestionList[0].ErrorMessage.Should().Match(radioButtonErrorSummaryLink.ErrorBannerLinkText);
-        
+
         var textAreaErrorSummaryLink = result.ErrorSummaryLinks[1];
         textAreaErrorSummaryLink.Should().NotBeNull();
         textAreaErrorSummaryLink.ElementLinkId.Should().Be("1_textArea");
         textAreaErrorSummaryLink.ErrorBannerLinkText.Should().Be((feedbackFormPage.Questions[1] as FeedbackFormQuestionTextArea)!.ErrorMessage);
         model.QuestionList[1].HasError.Should().BeTrue();
         model.QuestionList[1].ErrorMessage.Should().Match(textAreaErrorSummaryLink.ErrorBannerLinkText);
-        
-        var radioAndInputErrorSummaryLink = result.ErrorSummaryLinks[2];
-        radioAndInputErrorSummaryLink.Should().NotBeNull();
-        radioAndInputErrorSummaryLink.ElementLinkId.Should().Be("2_yes");
-        radioAndInputErrorSummaryLink.ErrorBannerLinkText.Should().Be((feedbackFormPage.Questions[2] as FeedbackFormQuestionRadioAndInput)!.ErrorMessage);
-        model.QuestionList[2].HasError.Should().BeTrue();
-        model.QuestionList[2].ErrorMessage.Should().Match(radioAndInputErrorSummaryLink.ErrorBannerLinkText);
-        
-        mockUserJourneyCookieService.Verify(x => x.SetHasSubmittedEmailAddressInFeedbackFormQuestion(false), Times.Once);
-    }
-    
-    [TestMethod]
-    public void ValidateQuestions_AdditionalInfoNotSet_ReturnsErrorLinks()
-    {
-        var feedbackFormPage = CreateFeedbackFormPageModel(false);
-        var questionList = new List<FeedbackFormQuestionListModel>
-                           {
-                               new FeedbackFormQuestionListModel
-                               {
-                                   Question = (feedbackFormPage.Questions[0] as BaseFeedbackFormQuestion)!.Question,
-                                   Answer = "yes"
-                               },
-                               new FeedbackFormQuestionListModel
-                               {
-                                   Question = (feedbackFormPage.Questions[1] as BaseFeedbackFormQuestion)!.Question,
-                                   Answer = "text"
-                               },
-                               new FeedbackFormQuestionListModel
-                               {
-                                   Question = (feedbackFormPage.Questions[2] as BaseFeedbackFormQuestion)!.Question,
-                                   Answer = "yes"
-                               }
-                           };
-        var model = CreateFeedbackFormPageModel(questionList);
-        
-        var mockUserJourneyCookieService = new Mock<IUserJourneyCookieService>();
-        
-        var service = new FeedbackFormService(mockUserJourneyCookieService.Object);
-        
-        var result = service.ValidateQuestions(feedbackFormPage, model);
-        
-        result.Should().NotBeNull();
-        result.ErrorBannerHeading.Should().Match(feedbackFormPage.ErrorBannerHeading);
-        result.ErrorSummaryLinks.Should().NotBeNull();
-        result.ErrorSummaryLinks.Count.Should().Be(1);
-        
-        var radioAndInputErrorSummaryLink = result.ErrorSummaryLinks[0];
-        radioAndInputErrorSummaryLink.Should().NotBeNull();
-        radioAndInputErrorSummaryLink.ElementLinkId.Should().Be("2_additionalInfo");
-        radioAndInputErrorSummaryLink.ErrorBannerLinkText.Should().Be((feedbackFormPage.Questions[2] as FeedbackFormQuestionRadioAndInput)!.ErrorMessageForInput);
-        model.QuestionList[2].HasError.Should().BeTrue();
-        model.QuestionList[2].ErrorMessage.Should().Match(radioAndInputErrorSummaryLink.ErrorBannerLinkText);
-        
-        mockUserJourneyCookieService.Verify(x => x.SetHasSubmittedEmailAddressInFeedbackFormQuestion(false), Times.Once);
-    }
-    
-    [TestMethod]
-    public void ValidateQuestions_AdditionalInfoInvalidFormat_ReturnsErrorLinks()
-    {
-        var feedbackFormPage = CreateFeedbackFormPageModel(false);
-        var questionList = new List<FeedbackFormQuestionListModel>
-                           {
-                               new FeedbackFormQuestionListModel
-                               {
-                                   Question = (feedbackFormPage.Questions[0] as BaseFeedbackFormQuestion)!.Question,
-                                   Answer = "yes"
-                               },
-                               new FeedbackFormQuestionListModel
-                               {
-                                   Question = (feedbackFormPage.Questions[1] as BaseFeedbackFormQuestion)!.Question,
-                                   Answer = "text"
-                               },
-                               new FeedbackFormQuestionListModel
-                               {
-                                   Question = (feedbackFormPage.Questions[2] as BaseFeedbackFormQuestion)!.Question,
-                                   Answer = "yes",
-                                   AdditionalInfo = "testing"
-                               }
-                           };
-        var model = CreateFeedbackFormPageModel(questionList);
-        
-        var mockUserJourneyCookieService = new Mock<IUserJourneyCookieService>();
-        
-        var service = new FeedbackFormService(mockUserJourneyCookieService.Object);
-        
-        var result = service.ValidateQuestions(feedbackFormPage, model);
-        
-        result.Should().NotBeNull();
-        result.ErrorBannerHeading.Should().Match(feedbackFormPage.ErrorBannerHeading);
-        result.ErrorSummaryLinks.Should().NotBeNull();
-        result.ErrorSummaryLinks.Count.Should().Be(1);
-        
-        var radioAndInputErrorSummaryLink = result.ErrorSummaryLinks[0];
-        radioAndInputErrorSummaryLink.Should().NotBeNull();
-        radioAndInputErrorSummaryLink.ElementLinkId.Should().Be("2_additionalInfo");
-        radioAndInputErrorSummaryLink.ErrorBannerLinkText.Should().Be((feedbackFormPage.Questions[2] as FeedbackFormQuestionRadioAndInput)!.ErrorMessageForInvalidEmailFormat);
-        model.QuestionList[2].HasError.Should().BeTrue();
-        model.QuestionList[2].ErrorMessage.Should().Match(radioAndInputErrorSummaryLink.ErrorBannerLinkText);
-        
-        mockUserJourneyCookieService.Verify(x => x.SetHasSubmittedEmailAddressInFeedbackFormQuestion(false), Times.Once);
-    }
-    
-    [TestMethod]
-    public void ValidateQuestions_AnsweredWouldYouLikeToBeContactedAboutResearchQuestion_SetsCookieValueToTrue()
-    {
-        var feedbackFormPage = CreateFeedbackFormPageModel(true);
-        var questionList = new List<FeedbackFormQuestionListModel>
-                           {
-                               new FeedbackFormQuestionListModel
-                               {
-                                   Question = (feedbackFormPage.Questions[0] as BaseFeedbackFormQuestion)!.Question,
-                                   Answer = "yes"
-                               },
-                               new FeedbackFormQuestionListModel
-                               {
-                                   Question = (feedbackFormPage.Questions[1] as BaseFeedbackFormQuestion)!.Question,
-                                   Answer = "text"
-                               },
-                               new FeedbackFormQuestionListModel
-                               {
-                                   Question = (feedbackFormPage.Questions[2] as BaseFeedbackFormQuestion)!.Question,
-                                   Answer = "yes",
-                                   AdditionalInfo = "testing@test.com"
-                               }
-                           };
-        var model = CreateFeedbackFormPageModel(questionList);
-        
-        var mockUserJourneyCookieService = new Mock<IUserJourneyCookieService>();
-        
-        var service = new FeedbackFormService(mockUserJourneyCookieService.Object);
-        
-        var result = service.ValidateQuestions(feedbackFormPage, model);
-        
-        result.Should().NotBeNull();
-        result.ErrorBannerHeading.Should().Match(feedbackFormPage.ErrorBannerHeading);
-        result.ErrorSummaryLinks.Should().BeEmpty();
-        
-        mockUserJourneyCookieService.Verify(x => x.SetHasSubmittedEmailAddressInFeedbackFormQuestion(true), Times.Once);
     }
 
     [TestMethod]
@@ -369,25 +227,6 @@ public class FeedbackFormServiceTests
                            IsTheQuestionMandatory = true,
                            Question = "Text Area Question",
                            ErrorMessage = "Text area error message"
-                       },
-                       new FeedbackFormQuestionRadioAndInput
-                       {
-                           Sys = new SystemProperties
-                                 {
-                                     Id = setSystemId ? FeedbackFormQuestions.WouldYouLikeToBeContactedAboutResearch : string.Empty
-                                 },
-                           IsTheQuestionMandatory = true,
-                           Question = "Radio and Input Question",
-                           ErrorMessage = "Radio and Input Question error message",
-                           ErrorMessageForInput = "Input error message",
-                           ErrorMessageForInvalidEmailFormat = "Input format error message",
-                           ValidateInputAsAnEmailAddress = true,
-                           Options = [
-                                         new Option
-                                         {
-                                             Value = "yes"
-                                         }
-                                     ]
                        }
                    ]
                };

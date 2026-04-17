@@ -1179,7 +1179,7 @@ public class MockContentfulServiceTests
         result.CtaButtonText.Should().Be("Submit feedback");
         result.ErrorBannerHeading.Should().Be("There is a problem");
         result.Questions.Should().NotBeNullOrEmpty();
-        result.Questions.Count.Should().Be(3);
+        result.Questions.Count.Should().Be(2);
         result.Questions[0].Should().BeAssignableTo<FeedbackFormQuestionRadio>();
 
         var question0 = (FeedbackFormQuestionRadio)result.Questions[0];
@@ -1201,24 +1201,6 @@ public class MockContentfulServiceTests
         question1.Question.Should().Be("Tell us about your experience (optional)");
         question1.HintText.Should()
                  .Be("Do not include personal information, for example the name of the qualification holder");
-
-        var question2 = (FeedbackFormQuestionRadioAndInput)result.Questions[2];
-        question2.Should().NotBeNull();
-        question2.Question.Should().Be("Would you like us to contact you about future user research?");
-        question2.Options.Should().NotBeNullOrEmpty();
-        question2.Options.Count.Should().Be(2);
-        (question2.Options[0] as Option)!.Label.Should().Be("Yes");
-        (question2.Options[0] as Option)!.Value.Should().Be("yes");
-        (question2.Options[1] as Option)!.Label.Should().Be("No");
-        (question2.Options[1] as Option)!.Value.Should().Be("no");
-        question2.IsTheQuestionMandatory.Should().BeTrue();
-        question2.InputHeading.Should().Be("Your email address");
-        question2.InputHeadingHintText.Should().Be("Input heading hint text");
-        question2.ValidateInputAsAnEmailAddress.Should().BeTrue();
-        question2.ErrorMessage.Should().Be("Select whether you want to be contacted about future research");
-        question2.ErrorMessageForInput.Should().Be("Enter your email address");
-        question2.ErrorMessageForInvalidEmailFormat.Should()
-                 .Be("Enter an email address in the correct format, like name@example.com");
     }
 
     [TestMethod]
