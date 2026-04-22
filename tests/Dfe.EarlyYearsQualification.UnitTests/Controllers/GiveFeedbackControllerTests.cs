@@ -156,7 +156,7 @@ public class GiveFeedbackControllerTests
     }
 
     [TestMethod]
-    public async Task Post_PassesValidation_RedirectsToConfirmation()
+    public async Task Post_PassesValidationWithAnswers_SendsNotificationAndRedirectsToConfirmation()
     {
         var mockContentService = new Mock<IContentService>();
         var mockFeedbackFormService = new Mock<IFeedbackFormService>();
@@ -180,6 +180,10 @@ public class GiveFeedbackControllerTests
                                .Returns("Message");
 
         var model = GetFeedbackFormPageModel();
+        model.QuestionList =
+        [
+            new FeedbackFormQuestionListModel { Question = "Test Question", Answer = "Test Answer" }
+        ];
 
         var result = await controller.Post(model);
 
@@ -194,7 +198,149 @@ public class GiveFeedbackControllerTests
         mockNotificationService
             .Verify(x => x.SendEmbeddedFeedbackFormNotification(It.IsAny<EmbeddedFeedbackFormNotification>()),
                     Times.Once());
-        
+
+        mockUserJourneyCookieService
+            .Verify(x => x.SetHasUserGotEverythingTheyNeededToday(string.Empty),
+                    Times.Once());
+    }
+
+    [TestMethod]
+    public async Task Post_PassesValidationWithNoAnswers_DoesNotSendNotificationButRedirectsToConfirmation()
+    {
+        var mockContentService = new Mock<IContentService>();
+        var mockFeedbackFormService = new Mock<IFeedbackFormService>();
+        var mockUserJourneyCookieService = new Mock<IUserJourneyCookieService>();
+        var mockNotificationService = new Mock<INotificationService>();
+        var mockFeedbackFormPageMapper = new Mock<IFeedbackFormPageMapper>();
+        var mockFeedbackFormConfirmationPageMapper = new Mock<IFeedbackFormConfirmationPageMapper>();
+        var controller = new GiveFeedbackController(mockContentService.Object,
+                                                    mockFeedbackFormService.Object, mockUserJourneyCookieService.Object,
+                                                    mockNotificationService.Object,
+                                                    mockFeedbackFormPageMapper.Object,
+                                                    mockFeedbackFormConfirmationPageMapper.Object);
+
+        var feedbackFormPage = GetFeedbackFormPage();
+
+        mockContentService.Setup(x => x.GetFeedbackFormPage()).ReturnsAsync(feedbackFormPage);
+        mockFeedbackFormService
+            .Setup(x => x.ValidateQuestions(It.IsAny<FeedbackFormPage>(), It.IsAny<FeedbackFormPageModel>()))
+            .Returns(new ErrorSummaryModel { ErrorSummaryLinks = [] });
+
+        var model = GetFeedbackFormPageModel();
+        model.QuestionList =
+        [
+            new FeedbackFormQuestionListModel { Question = "Test Question", Answer = null }
+        ];
+
+        var result = await controller.Post(model);
+
+        result.Should().NotBeNull();
+
+        var resultType = result as RedirectToActionResult;
+
+        resultType.Should().NotBeNull();
+
+        resultType.ActionName.Should().Be("Confirmation");
+
+        mockNotificationService
+            .Verify(x => x.SendEmbeddedFeedbackFormNotification(It.IsAny<EmbeddedFeedbackFormNotification>()),
+                    Times.Never());
+
+        mockUserJourneyCookieService
+            .Verify(x => x.SetHasUserGotEverythingTheyNeededToday(string.Empty),
+                    Times.Once());
+    }
+
+    [TestMethod]
+    public async Task Post_PassesValidationWithEmptyQuestionList_DoesNotSendNotificationButRedirectsToConfirmation()
+    {
+        var mockContentService = new Mock<IContentService>();
+        var mockFeedbackFormService = new Mock<IFeedbackFormService>();
+        var mockUserJourneyCookieService = new Mock<IUserJourneyCookieService>();
+        var mockNotificationService = new Mock<INotificationService>();
+        var mockFeedbackFormPageMapper = new Mock<IFeedbackFormPageMapper>();
+        var mockFeedbackFormConfirmationPageMapper = new Mock<IFeedbackFormConfirmationPageMapper>();
+        var controller = new GiveFeedbackController(mockContentService.Object,
+                                                    mockFeedbackFormService.Object, mockUserJourneyCookieService.Object,
+                                                    mockNotificationService.Object,
+                                                    mockFeedbackFormPageMapper.Object,
+                                                    mockFeedbackFormConfirmationPageMapper.Object);
+
+        var feedbackFormPage = GetFeedbackFormPage();
+
+        mockContentService.Setup(x => x.GetFeedbackFormPage()).ReturnsAsync(feedbackFormPage);
+        mockFeedbackFormService
+            .Setup(x => x.ValidateQuestions(It.IsAny<FeedbackFormPage>(), It.IsAny<FeedbackFormPageModel>()))
+            .Returns(new ErrorSummaryModel { ErrorSummaryLinks = [] });
+
+        var model = GetFeedbackFormPageModel();
+        model.QuestionList = [];
+
+        var result = await controller.Post(model);
+
+        result.Should().NotBeNull();
+
+        var resultType = result as RedirectToActionResult;
+
+        resultType.Should().NotBeNull();
+
+        resultType.ActionName.Should().Be("Confirmation");
+
+        mockNotificationService
+            .Verify(x => x.SendEmbeddedFeedbackFormNotification(It.IsAny<EmbeddedFeedbackFormNotification>()),
+                    Times.Never());
+
+        mockUserJourneyCookieService
+            .Verify(x => x.SetHasUserGotEverythingTheyNeededToday(string.Empty),
+                    Times.Once());
+    }
+
+    [TestMethod]
+    public async Task Post_PassesValidationWithMixedAnswers_SendsNotificationAndRedirectsToConfirmation()
+    {
+        var mockContentService = new Mock<IContentService>();
+        var mockFeedbackFormService = new Mock<IFeedbackFormService>();
+        var mockUserJourneyCookieService = new Mock<IUserJourneyCookieService>();
+        var mockNotificationService = new Mock<INotificationService>();
+        var mockFeedbackFormPageMapper = new Mock<IFeedbackFormPageMapper>();
+        var mockFeedbackFormConfirmationPageMapper = new Mock<IFeedbackFormConfirmationPageMapper>();
+        var controller = new GiveFeedbackController(mockContentService.Object,
+                                                    mockFeedbackFormService.Object, mockUserJourneyCookieService.Object,
+                                                    mockNotificationService.Object,
+                                                    mockFeedbackFormPageMapper.Object,
+                                                    mockFeedbackFormConfirmationPageMapper.Object);
+
+        var feedbackFormPage = GetFeedbackFormPage();
+
+        mockContentService.Setup(x => x.GetFeedbackFormPage()).ReturnsAsync(feedbackFormPage);
+        mockFeedbackFormService
+            .Setup(x => x.ValidateQuestions(It.IsAny<FeedbackFormPage>(), It.IsAny<FeedbackFormPageModel>()))
+            .Returns(new ErrorSummaryModel { ErrorSummaryLinks = [] });
+        mockFeedbackFormService.Setup(x => x.ConvertQuestionListToString(It.IsAny<FeedbackFormPageModel>()))
+                               .Returns("Message");
+
+        var model = GetFeedbackFormPageModel();
+        model.QuestionList =
+        [
+            new FeedbackFormQuestionListModel { Question = "Question 1", Answer = null },
+            new FeedbackFormQuestionListModel { Question = "Question 2", Answer = "Some Answer" },
+            new FeedbackFormQuestionListModel { Question = "Question 3", Answer = null }
+        ];
+
+        var result = await controller.Post(model);
+
+        result.Should().NotBeNull();
+
+        var resultType = result as RedirectToActionResult;
+
+        resultType.Should().NotBeNull();
+
+        resultType.ActionName.Should().Be("Confirmation");
+
+        mockNotificationService
+            .Verify(x => x.SendEmbeddedFeedbackFormNotification(It.IsAny<EmbeddedFeedbackFormNotification>()),
+                    Times.Once());
+
         mockUserJourneyCookieService
             .Verify(x => x.SetHasUserGotEverythingTheyNeededToday(string.Empty),
                     Times.Once());

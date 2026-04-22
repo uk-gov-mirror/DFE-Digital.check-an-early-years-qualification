@@ -139,8 +139,7 @@ $("#give-feedback-form").on("submit", function () {
     });
 
     const payload = {
-        'event': 'giveFeedbackFormSubmission',
-        'question': null
+        'event': 'giveFeedbackFormSubmission'
     };
 
     // Add each question and its status to the payload

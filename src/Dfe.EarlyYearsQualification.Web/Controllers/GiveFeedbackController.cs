@@ -49,13 +49,18 @@ public class GiveFeedbackController(
             return View("Get", mappedModel);
         }
         
-        var message = feedbackFormService.ConvertQuestionListToString(model);
-        notificationService.SendEmbeddedFeedbackFormNotification(new EmbeddedFeedbackFormNotification{ Message = message });
+        if (model.QuestionList.Any(x => x.Answer is not null))
+        {
+            var message = feedbackFormService.ConvertQuestionListToString(model);
+
+            notificationService.SendEmbeddedFeedbackFormNotification(new EmbeddedFeedbackFormNotification{ Message = message });
+        }
+
         userJourneyCookieService.SetHasUserGotEverythingTheyNeededToday(string.Empty);
 
-        return RedirectToAction("Confirmation");
+        return RedirectToAction(nameof(Confirmation));
     }
-    
+
     [HttpGet("confirmation")]
     public async Task<IActionResult> Confirmation()
     {
