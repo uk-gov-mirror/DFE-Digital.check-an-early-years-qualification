@@ -48,9 +48,7 @@ public class FeedbackFormPageMapper(IGovUkContentParser contentParser) : IFeedba
         return new FeedbackFormQuestionTextAreaModel
                {
                    Question = question!.Question,
-                   HintText = question.HintText,
-                   ErrorMessage = question.ErrorMessage,
-                   IsRequired = question.IsTheQuestionMandatory
+                   HintText = question.HintText
                };
     }
 
@@ -59,9 +57,7 @@ public class FeedbackFormPageMapper(IGovUkContentParser contentParser) : IFeedba
         return new FeedbackFormQuestionRadioModel
                {
                    Question = question!.Question,
-                   ErrorMessage = question.ErrorMessage,
-                   OptionsItems = OptionItemMapper.Map(question.Options),
-                   IsRequired = question.IsTheQuestionMandatory
+                   OptionsItems = OptionItemMapper.Map(question.Options)
                };
     }
 }

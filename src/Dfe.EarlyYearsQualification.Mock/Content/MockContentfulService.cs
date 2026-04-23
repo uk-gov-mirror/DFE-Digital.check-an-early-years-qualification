@@ -627,33 +627,71 @@ public class MockContentfulService : IContentService
                                          [
                                              new FeedbackFormQuestionRadio
                                              {
-                                                 Sys = new SystemProperties
-                                                       {
-                                                           Id = FeedbackFormQuestions
-                                                               .WouldYouLikeToBeContactedAboutResearch
-                                                       },
-                                                 Question = "Did you get everything you needed today?",
-                                                 IsTheQuestionMandatory = true,
-                                                 ErrorMessage =
-                                                     "Select whether you got everything you needed today",
+                                                 Question = "Overall, how satisfied are you with this service?",
                                                  Options =
                                                  [
                                                      new Option
                                                      {
-                                                         Label = "Yes",
-                                                         Value = "yes"
+                                                         Label = "Very satisfied",
+                                                         Value = "VerySatisfied"
                                                      },
-
                                                      new Option
                                                      {
-                                                         Label = "No",
-                                                         Value = "no"
+                                                         Label = "Satisfied",
+                                                         Value = "Satisfied"
+                                                     },
+                                                     new Option
+                                                     {
+                                                         Label = "Neutral",
+                                                         Value = "Neutral"
+                                                     },
+                                                     new Option
+                                                     {
+                                                         Label = "Dissatisfied",
+                                                         Value = "Dissatisfied"
+                                                     },
+                                                     new Option
+                                                     {
+                                                         Label = "Very dissatisfied",
+                                                         Value = "VeryDissatisfied"
+                                                     }
+                                                 ]
+                                             },
+                                             new FeedbackFormQuestionRadio
+                                             {
+                                                 Question = "How confident are you with the information you received from the service?",
+                                                 Options =
+                                                 [
+                                                     new Option
+                                                     {
+                                                         Label = "Very confident",
+                                                         Value = "VeryConfident"
+                                                     },
+                                                     new Option
+                                                     {
+                                                         Label = "Confident",
+                                                         Value = "Confident"
+                                                     },
+                                                     new Option
+                                                     {
+                                                         Label = "Neutral",
+                                                         Value = "Neutral"
+                                                     },
+                                                     new Option
+                                                     {
+                                                         Label = "Slightly confident",
+                                                         Value = "SlightlyConfident"
+                                                     },
+                                                     new Option
+                                                     {
+                                                         Label = "Not at all confident",
+                                                         Value = "NotAtAllConfident"
                                                      }
                                                  ]
                                              },
                                              new FeedbackFormQuestionTextArea
                                              {
-                                                 Question = "Tell us about your experience (optional)",
+                                                 Question = "Share any feedback about your experience, including suggestions for how we could improve the service",
                                                  HintText =
                                                      "Do not include personal information, for example the name of the qualification holder"
                                              }

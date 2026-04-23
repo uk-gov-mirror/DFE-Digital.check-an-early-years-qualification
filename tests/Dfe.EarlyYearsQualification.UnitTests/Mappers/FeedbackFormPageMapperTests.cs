@@ -43,16 +43,12 @@ public class FeedbackFormPageMapperTests
         var question0 = result.Questions[0] as FeedbackFormQuestionRadioModel;
         question0.Should().NotBeNull();
         question0.Question.Should().Match((pageData.Questions[0] as FeedbackFormQuestionRadio)!.Question);
-        question0.ErrorMessage.Should().Match((pageData.Questions[0] as FeedbackFormQuestionRadio)!.ErrorMessage);
         question0.OptionsItems.Count.Should().Be((pageData.Questions[0] as FeedbackFormQuestionRadio)!.Options.Count);
-        question0.IsRequired.Should().BeTrue();
 
         var question1 = result.Questions[1] as FeedbackFormQuestionTextAreaModel;
         question1.Should().NotBeNull();
         question1.Question.Should().Match((pageData.Questions[1] as FeedbackFormQuestionTextArea)!.Question);
-        question1.ErrorMessage.Should().Match((pageData.Questions[1] as FeedbackFormQuestionTextArea)!.ErrorMessage);
         question1.HintText.Should().Be((pageData.Questions[1] as FeedbackFormQuestionTextArea)!.HintText);
-        question1.IsRequired.Should().BeTrue();
 
         result.QuestionList.Should().HaveCount(2);
     }
@@ -64,16 +60,12 @@ public class FeedbackFormPageMapperTests
                             new FeedbackFormQuestionRadio
                             {
                                 Question = "Radio question",
-                                ErrorMessage = "Radio question Error",
-                                Options = AddOptions(),
-                                IsTheQuestionMandatory = true
+                                Options = AddOptions()
                             },
                             new FeedbackFormQuestionTextArea
                             {
                                 Question = "Text area question",
-                                ErrorMessage = "Text area question Error",
-                                HintText = "Text area hint",
-                                IsTheQuestionMandatory = true
+                                HintText = "Text area hint"
                             }
                         };
 

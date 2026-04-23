@@ -109,7 +109,7 @@ $("#refine-search-form").on("submit", function(){
     });
 });
 
-$("#clear-search-form").on("submit", function(){
+$("#clear-search-form").on("submit", function() {
     window.dataLayer.push({
         'event': 'clearSearchFormSubmission'
     });
@@ -138,20 +138,24 @@ $("#give-feedback-form").on("submit", function () {
         }
     });
 
-    const payload = {
-        'event': 'giveFeedbackFormSubmission'
-    };
+    let payload = {};
 
-    // Add each question and its status to the payload
-    details.forEach((detail, index) => {
-        payload[`question_${index + 1}`] = detail.question;
-        payload[`answer_${index + 1}`] = detail.status;
-    });
+    if (answeredCount > 0) {
+        payload.event = 'giveFeedbackFormSubmission';
+        // Add each question and its status to the payload
+        details.forEach((detail, index) => {
+            payload[`question_${index + 1}`] = detail.question;
+            payload[`answer_${index + 1}`] = detail.status;
+        });
+    }
+    else {
+        payload.event = 'emptyFeedbackFormSubmission';
+    }
 
     window.dataLayer.push(payload);
 });
 
-$('#get-help-enquiry-form').on("submit", function(){
+$('#get-help-enquiry-form').on("submit", function() {
     let selectedAnswer = $(`input[name='SelectedOption']:checked`).val();
     window.dataLayer.push({
         'event': 'reasonForEnquiringFormSubmission',
