@@ -61,7 +61,7 @@ public class GiveFeedbackControllerTests
         mockContentService.Setup(x => x.GetFeedbackFormPage()).ReturnsAsync(feedbackFormPage);
 
         var expectedModel = GetFeedbackFormPageModel();
-        mockFeedbackFormPageMapper.Setup(x => x.Map(feedbackFormPage)).ReturnsAsync(expectedModel);
+        mockFeedbackFormPageMapper.Setup(x => x.Map(feedbackFormPage, "/give-feedback")).ReturnsAsync(expectedModel);
 
         var result = await controller.Get();
 
@@ -301,7 +301,6 @@ public class GiveFeedbackControllerTests
                {
                    Heading = "Heading",
                    CtaButtonText = "Continue",
-                   ErrorBannerHeading = "Error",
                    BackButton = new NavigationLink()
                };
     }
@@ -312,7 +311,6 @@ public class GiveFeedbackControllerTests
                {
                    Heading = "Heading",
                    CtaButtonText = "Continue",
-                   ErrorBannerHeading = "Error"
                };
     }
 }

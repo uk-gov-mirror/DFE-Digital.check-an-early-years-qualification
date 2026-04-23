@@ -622,7 +622,6 @@ public class MockContentfulService : IContentService
                                                           OpenInNewTab = false
                                                       },
                                          CtaButtonText = "Submit feedback",
-                                         ErrorBannerHeading = ThereIsAProblem,
                                          Questions =
                                          [
                                              new FeedbackFormQuestionRadio

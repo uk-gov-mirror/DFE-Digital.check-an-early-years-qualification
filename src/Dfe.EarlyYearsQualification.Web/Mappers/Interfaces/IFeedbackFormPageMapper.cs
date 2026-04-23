@@ -5,5 +5,5 @@ namespace Dfe.EarlyYearsQualification.Web.Mappers.Interfaces;
 
 public interface IFeedbackFormPageMapper
 {
-    Task<FeedbackFormPageModel> Map(FeedbackFormPage feedbackFormPage);
+    Task<FeedbackFormPageModel> Map(FeedbackFormPage feedbackFormPage, string submittedFrom);
 }

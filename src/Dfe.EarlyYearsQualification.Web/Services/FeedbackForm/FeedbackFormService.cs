@@ -23,6 +23,8 @@ public class FeedbackFormService() : IFeedbackFormService
             sb.AppendLine("---");
         }
 
+        sb.AppendLine($"Submitted from: {model.SubmittedFrom}");
+
         return sb.ToString();
     }
 }

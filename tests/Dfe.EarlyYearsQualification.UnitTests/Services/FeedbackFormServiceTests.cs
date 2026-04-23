@@ -20,16 +20,16 @@ public class FeedbackFormServiceTests
             ## {question}
             {answer}
             {additionalInfo}
-            
+
             ---
-            
+            Submitted from: 
+
             """;
-        
+
         var model = new FeedbackFormPageModel
                     {
                         Heading = "",
                         CtaButtonText = "",
-                        ErrorBannerHeading = "",
                         QuestionList =
                         [
                             new FeedbackFormQuestionListModel
@@ -43,9 +43,9 @@ public class FeedbackFormServiceTests
         var service = new FeedbackFormService();
         var result = service.ConvertQuestionListToString(model);
         result.Should().NotBeNull();
-        result.Should().Match(expectedResult);
+        result.Should().Be(expectedResult);
     }
-    
+
     [TestMethod]
     public void ConvertQuestionListToString_NoAdditionalInfo_ReturnsExpectedResult()
     {
@@ -55,16 +55,16 @@ public class FeedbackFormServiceTests
         const string expectedResult = $"""
             ## {question}
             {answer}
-            
+
             ---
-            
+            Submitted from: 
+
             """;
-        
+
         var model = new FeedbackFormPageModel
                     {
                         Heading = "",
                         CtaButtonText = "",
-                        ErrorBannerHeading = "",
                         QuestionList =
                         [
                             new FeedbackFormQuestionListModel
@@ -77,6 +77,6 @@ public class FeedbackFormServiceTests
         var service = new FeedbackFormService();
         var result = service.ConvertQuestionListToString(model);
         result.Should().NotBeNull();
-        result.Should().Match(expectedResult);
+        result.Should().Be(expectedResult);
     }
 }

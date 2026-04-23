@@ -1177,7 +1177,6 @@ public class MockContentfulServiceTests
             Href = "/"
         });
         result.CtaButtonText.Should().Be("Submit feedback");
-        result.ErrorBannerHeading.Should().Be("There is a problem");
         result.Questions.Should().NotBeNullOrEmpty();
         result.Questions.Count.Should().Be(3);
         result.Questions[0].Should().BeAssignableTo<FeedbackFormQuestionRadio>();

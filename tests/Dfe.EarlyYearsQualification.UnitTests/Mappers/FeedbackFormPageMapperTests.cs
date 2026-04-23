@@ -17,7 +17,6 @@ public class FeedbackFormPageMapperTests
                        {
                            Heading = "Heading",
                            CtaButtonText = "Continue",
-                           ErrorBannerHeading = "Error",
                            BackButton = new NavigationLink
                                         {
                                             Href = "/"
@@ -29,12 +28,11 @@ public class FeedbackFormPageMapperTests
         var mockContentParser = new Mock<IGovUkContentParser>();
         mockContentParser.Setup(x => x.ToHtml(pageData.PostHeadingContent)).ReturnsAsync(postHeadingContent);
         var mapper = new FeedbackFormPageMapper(mockContentParser.Object);
-        var result = await mapper.Map(pageData);
+        var result = await mapper.Map(pageData, "/give-feedback");
         
         result.Should().NotBeNull();
         result.Heading.Should().Be(pageData.Heading);
         result.CtaButtonText.Should().Be(pageData.CtaButtonText);
-        result.ErrorBannerHeading.Should().Be(pageData.ErrorBannerHeading);
         result.BackButton.Should().NotBeNull();
         result.BackButton.Href.Should().Be(pageData.BackButton.Href);
         result.Questions.Should().HaveCount(2);

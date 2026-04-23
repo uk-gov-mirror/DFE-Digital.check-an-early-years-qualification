@@ -25,7 +25,7 @@ public class GiveFeedbackController(
         var feedbackFormPage = await contentService.GetFeedbackFormPage();
         if (feedbackFormPage == null) return RedirectToAction("Index", "Error");
 
-        var model = await feedbackFormPageMapper.Map(feedbackFormPage);
+        var model = await feedbackFormPageMapper.Map(feedbackFormPage, "/give-feedback");
         return View(model);
     }
 
