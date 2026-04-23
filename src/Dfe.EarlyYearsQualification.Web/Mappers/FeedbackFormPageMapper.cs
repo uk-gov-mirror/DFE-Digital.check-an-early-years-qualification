@@ -7,7 +7,7 @@ namespace Dfe.EarlyYearsQualification.Web.Mappers;
 
 public class FeedbackFormPageMapper(IGovUkContentParser contentParser) : IFeedbackFormPageMapper
 {
-    public async Task<FeedbackFormPageModel> Map(FeedbackFormPage feedbackFormPage, string submittedFrom)
+    public async Task<FeedbackFormPageModel> Map(FeedbackFormPage feedbackFormPage)
     {
         var postHeadingContent = await contentParser.ToHtml(feedbackFormPage.PostHeadingContent);
         var model = new FeedbackFormPageModel
@@ -16,8 +16,7 @@ public class FeedbackFormPageMapper(IGovUkContentParser contentParser) : IFeedba
                    BackButton = NavigationLinkMapper.Map(feedbackFormPage.BackButton),
                    CtaButtonText = feedbackFormPage.CtaButtonText,
                    PostHeadingContent = postHeadingContent,
-                   Questions = MapQuestions(feedbackFormPage.Questions),
-                   SubmittedFrom = submittedFrom
+                   Questions = MapQuestions(feedbackFormPage.Questions)
         };
         
         model.Questions.ForEach(x => model.QuestionList.Add(new FeedbackFormQuestionListModel { Question = (x as BaseFeedbackFormQuestionModel)!.Question}));

@@ -28,7 +28,7 @@ public class FeedbackFormPageMapperTests
         var mockContentParser = new Mock<IGovUkContentParser>();
         mockContentParser.Setup(x => x.ToHtml(pageData.PostHeadingContent)).ReturnsAsync(postHeadingContent);
         var mapper = new FeedbackFormPageMapper(mockContentParser.Object);
-        var result = await mapper.Map(pageData, "/give-feedback");
+        var result = await mapper.Map(pageData);
         
         result.Should().NotBeNull();
         result.Heading.Should().Be(pageData.Heading);

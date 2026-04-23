@@ -61,7 +61,7 @@ public class GiveFeedbackControllerTests
         mockContentService.Setup(x => x.GetFeedbackFormPage()).ReturnsAsync(feedbackFormPage);
 
         var expectedModel = GetFeedbackFormPageModel();
-        mockFeedbackFormPageMapper.Setup(x => x.Map(feedbackFormPage, "/give-feedback")).ReturnsAsync(expectedModel);
+        mockFeedbackFormPageMapper.Setup(x => x.Map(feedbackFormPage)).ReturnsAsync(expectedModel);
 
         var result = await controller.Get();
 
@@ -91,7 +91,7 @@ public class GiveFeedbackControllerTests
                                                     mockFeedbackFormPageMapper.Object,
                                                     mockFeedbackFormConfirmationPageMapper.Object);
 
-        mockFeedbackFormService.Setup(x => x.ConvertQuestionListToString(It.IsAny<FeedbackFormPageModel>()))
+        mockFeedbackFormService.Setup(x => x.ConvertQuestionListToString(It.IsAny<FeedbackFormPageModel>(), It.IsAny<string>()))
                                .Returns("Message");
 
         var model = GetFeedbackFormPageModel();
@@ -199,7 +199,7 @@ public class GiveFeedbackControllerTests
                                                     mockFeedbackFormPageMapper.Object,
                                                     mockFeedbackFormConfirmationPageMapper.Object);
 
-        mockFeedbackFormService.Setup(x => x.ConvertQuestionListToString(It.IsAny<FeedbackFormPageModel>()))
+        mockFeedbackFormService.Setup(x => x.ConvertQuestionListToString(It.IsAny<FeedbackFormPageModel>(), It.IsAny<string>()))
                                .Returns("Message");
 
         var model = GetFeedbackFormPageModel();

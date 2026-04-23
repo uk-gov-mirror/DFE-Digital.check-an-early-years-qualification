@@ -5,7 +5,7 @@ namespace Dfe.EarlyYearsQualification.Web.Services.FeedbackForm;
 
 public class FeedbackFormService() : IFeedbackFormService
 {
-    public string ConvertQuestionListToString(FeedbackFormPageModel model)
+    public string ConvertQuestionListToString(FeedbackFormPageModel model, string url)
     {
         var sb = new StringBuilder();
 
@@ -23,7 +23,7 @@ public class FeedbackFormService() : IFeedbackFormService
             sb.AppendLine("---");
         }
 
-        sb.AppendLine($"Submitted from: {model.SubmittedFrom}");
+        sb.AppendLine($"Submitted from: {url}");
 
         return sb.ToString();
     }

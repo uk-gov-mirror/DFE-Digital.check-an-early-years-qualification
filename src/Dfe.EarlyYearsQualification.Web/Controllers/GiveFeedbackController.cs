@@ -25,7 +25,7 @@ public class GiveFeedbackController(
         var feedbackFormPage = await contentService.GetFeedbackFormPage();
         if (feedbackFormPage == null) return RedirectToAction("Index", "Error");
 
-        var model = await feedbackFormPageMapper.Map(feedbackFormPage, "/give-feedback");
+        var model = await feedbackFormPageMapper.Map(feedbackFormPage);
         return View(model);
     }
 
@@ -34,7 +34,7 @@ public class GiveFeedbackController(
     {
         if (model.QuestionList.Any(x => x.Answer is not null))
         {
-            var message = feedbackFormService.ConvertQuestionListToString(model);
+            var message = feedbackFormService.ConvertQuestionListToString(model, "/give-feedback");
 
             notificationService.SendEmbeddedFeedbackFormNotification(new EmbeddedFeedbackFormNotification{ Message = message });
         }
